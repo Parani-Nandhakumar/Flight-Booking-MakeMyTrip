@@ -2,6 +2,9 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FlightTicketBooking {
     public static void main(String[] args) throws InterruptedException {
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
@@ -9,7 +12,7 @@ public class FlightTicketBooking {
         driver.get("https://www.makemytrip.com/");
         driver.manage().window().maximize();
         //waiting till popup displayed
-        Thread.sleep(5000);
+        Thread.sleep(2000);
         //switching to iframe to handle hyperlink popup
         driver.switchTo().frame(driver.findElement(By.id("webklipper-publisher-widget-container-notification-frame")));
         WebElement hyperlinkElement = driver.findElement(By.cssSelector(".close"));
@@ -19,14 +22,28 @@ public class FlightTicketBooking {
             hyperlinkElement.click();
         }
         Thread.sleep(2000);
-        driver.findElement(By.cssSelector("#username")).sendKeys("parani777@gmail.com");
-        driver.findElement(By.cssSelector(".btnContainer.appendBottom25")).click();
-        Thread.sleep(2000);
-        driver.findElement(By.cssSelector("#password")).sendKeys("Kalamani@1969");
-        driver.findElement(By.cssSelector(".btnContainer.appendBottom25")).click();
-        Thread.sleep(1000);
-        Actions action = new Actions(driver);
-        WebElement makeMyTripPageElement = driver.findElement(By.cssSelector(".mmtLogo.makeFlex"));
-        action.moveToElement(makeMyTripPageElement).click(makeMyTripPageElement).build().perform();
+        if(driver.findElement(By.cssSelector("#username")).isDisplayed()) {
+            driver.findElement(By.cssSelector("#username")).sendKeys("parani777@gmail.com");
+            driver.findElement(By.cssSelector(".btnContainer.appendBottom25")).click();
+            Thread.sleep(2000);
+            driver.findElement(By.cssSelector("#password")).sendKeys("Kalamani@1969");
+            driver.findElement(By.cssSelector(".btnContainer.appendBottom25")).click();
+            Thread.sleep(1000);
+            Actions action = new Actions(driver);
+            WebElement makeMyTripPageElement = driver.findElement(By.cssSelector(".mmtLogo.makeFlex"));
+            action.moveToElement(makeMyTripPageElement).click(makeMyTripPageElement).build().perform();
+        }
+        driver.findElement(By.xpath("//li[@data-cy='oneWayTrip']/span")).click();
+        driver.findElement(By.xpath("//label[@for='fromCity']/parent::div")).click();
+        if(driver.findElement(By.cssSelector(".autoSuggestPlugin.hsw_autocomplePopup")).isEnabled()){
+            driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open")).click();
+            driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open")).sendKeys("coimbatore");
+            Thread.sleep(2000);
+            //List<WebElement> suggestionElements = driver.findElements(By.cssSelector(".calc60"));
+            //for ( WebElement w : suggestionElements){
+              //  if(w.getText().equals("Kochi, India"));
+               // w.click();
+            //}
+        }
 }
 }
