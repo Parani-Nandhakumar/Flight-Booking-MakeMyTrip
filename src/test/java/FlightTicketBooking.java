@@ -1,8 +1,6 @@
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class FlightTicketBooking {
@@ -37,13 +35,31 @@ public class FlightTicketBooking {
         driver.findElement(By.xpath("//label[@for='fromCity']/parent::div")).click();
         if(driver.findElement(By.cssSelector(".autoSuggestPlugin.hsw_autocomplePopup")).isEnabled()){
             driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open")).click();
-            driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open")).sendKeys("coimbatore");
+            driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open")).sendKeys("CJB");
             Thread.sleep(2000);
-            //List<WebElement> suggestionElements = driver.findElements(By.cssSelector(".calc60"));
-            //for ( WebElement w : suggestionElements){
-              //  if(w.getText().equals("Kochi, India"));
-               // w.click();
-            //}
+}
+        List<WebElement> suggestionElementsFrom = driver.findElements(By.cssSelector(".pushRight.font14.lightGreyText.latoBold"));
+        for ( WebElement w : suggestionElementsFrom){
+            if(w.getText().equals("CJB")){
+                Thread.sleep(2000);
+                w.click();
+                break;
+            }
+        }
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//label[@for='toCity']/parent::div")).click();
+        if(driver.findElement(By.cssSelector(".autoSuggestPlugin.hsw_autocomplePopup.makeFlex.column.spaceBetween")).isEnabled()){
+            driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open")).click();
+            driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open")).sendKeys("SIN");
+            Thread.sleep(2000);
+        }
+        List<WebElement> suggestionElementsTo = driver.findElements(By.cssSelector(".pushRight.font14.lightGreyText.latoBold"));
+        for ( WebElement w : suggestionElementsTo){
+            if(w.getText().equals("SIN")){
+                Thread.sleep(2000);
+                w.click();
+                break;
+            }
         }
 }
 }
