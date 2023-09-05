@@ -21,12 +21,12 @@ public class FlightTicketBooking {
         }
         Thread.sleep(2000);
         if(driver.findElement(By.cssSelector("#username")).isDisplayed()) {
-            driver.findElement(By.cssSelector("#username")).sendKeys("parani777@gmail.com");
-            driver.findElement(By.cssSelector(".btnContainer.appendBottom25")).click();
-            Thread.sleep(2000);
-            driver.findElement(By.cssSelector("#password")).sendKeys("Kalamani@1969");
-            driver.findElement(By.cssSelector(".btnContainer.appendBottom25")).click();
-            Thread.sleep(1000);
+            //driver.findElement(By.cssSelector("#username")).sendKeys("parani777@gmail.com");
+            //driver.findElement(By.cssSelector(".btnContainer.appendBottom25")).click();
+            //Thread.sleep(2000);
+            //driver.findElement(By.cssSelector("#password")).sendKeys("Kalamani@1969");
+            //driver.findElement(By.cssSelector(".btnContainer.appendBottom25")).click();
+            //Thread.sleep(1000);
             Actions action = new Actions(driver);
             WebElement makeMyTripPageElement = driver.findElement(By.cssSelector(".mmtLogo.makeFlex"));
             action.moveToElement(makeMyTripPageElement).click(makeMyTripPageElement).build().perform();
@@ -61,5 +61,21 @@ public class FlightTicketBooking {
                 break;
             }
         }
-}
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//div[contains(@aria-label,'Sep 27')]")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.cssSelector(".fsw_inputBox.flightTravllers.inactiveWidget")).click();
+        driver.findElement(By.xpath("//li[@data-cy='adults-2']")).click();
+        driver.findElement(By.xpath("//li[@data-cy='children-1']")).click();
+        driver.findElement(By.xpath("//li[@data-cy='infants-1']")).click();
+        driver.findElement(By.xpath("//li[@data-cy='travelClass-2']")).click();
+        driver.findElement(By.cssSelector(".primaryBtn.btnApply.pushRight")).click();
+        Thread.sleep(1000);
+        //driver.findElement(By.xpath("//ul[@class='specialFareNew']/li[3]")).click();
+        driver.findElement(By.cssSelector(".primaryBtn.font24.latoBold.widgetSearchBtn ")).click();
+        Thread.sleep(10000);
+        if(driver.findElement(By.cssSelector(".commonOverlay ")).isEnabled()){
+            driver.findElement(By.cssSelector(".bgProperties.icon20.overlayCrossIcon")).click();
+        }
+    }
 }
