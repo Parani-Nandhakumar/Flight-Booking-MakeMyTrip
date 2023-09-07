@@ -1,23 +1,38 @@
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
 public class FlightTicketBooking {
-    public static void main(String[] args) throws InterruptedException {
+    static WebDriver driver;
+    static Properties properties;
+
+    public static void driverSetup() throws IOException {
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.makemytrip.com/");
+        driver = new ChromeDriver();
+        FileInputStream fileInputStream = new FileInputStream("fileProperties.properties");
+        properties = new Properties();
+        properties.load(fileInputStream);
+        driver.get(properties.getProperty("url"));
         driver.manage().window().maximize();
+    }
+
+    public static void main(String[] args) throws IOException, InterruptedException {
+        driverSetup();
         //waiting till popup displayed
         Thread.sleep(2000);
+        HomePageSearch homePageSearch = new HomePageSearch(driver);
         //switching to iframe to handle hyperlink popup
-        driver.switchTo().frame(driver.findElement(By.id("webklipper-publisher-widget-container-notification-frame")));
-        WebElement hyperlinkElement = driver.findElement(By.cssSelector(".close"));
+        driver.switchTo().frame(homePageSearch.notificationFrameElement());
         //checking if hyperlink is enabled and then closing the hyperlink
-        boolean isHyperlinkDisplayed = hyperlinkElement.isEnabled();
+        boolean isHyperlinkDisplayed = homePageSearch.closePopupNotification().isEnabled();
         if (isHyperlinkDisplayed){
-            hyperlinkElement.click();
+            homePageSearch.closePopupNotification().click();
         }
         Thread.sleep(2000);
         if(driver.findElement(By.cssSelector("#username")).isDisplayed()) {
@@ -37,7 +52,7 @@ public class FlightTicketBooking {
             driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open")).click();
             driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open")).sendKeys("CJB");
             Thread.sleep(2000);
-}
+        }
         List<WebElement> suggestionElementsFrom = driver.findElements(By.cssSelector(".pushRight.font14.lightGreyText.latoBold"));
         for ( WebElement w : suggestionElementsFrom){
             if(w.getText().equals("CJB")){
@@ -78,4 +93,4 @@ public class FlightTicketBooking {
             driver.findElement(By.cssSelector(".bgProperties.icon20.overlayCrossIcon")).click();
         }
     }
-}
+    }
