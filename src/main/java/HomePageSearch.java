@@ -8,11 +8,18 @@ public class HomePageSearch {
         HomePageSearch.driver = driver;
     }
     public WebElement notificationFrameElement(){
-        WebElement popupNotificationFrameElement = driver.findElement(By.id("webklipper-publisher-widget-container-notification-frame"));
-        return popupNotificationFrameElement;
+        return driver.findElement(By.id("webklipper-publisher-widget-container-notification-frame"));
     }
     public WebElement closePopupNotification(){
-        WebElement popupNotificationElement = driver.findElement(By.cssSelector(".close"));
-        return popupNotificationElement;
+        return driver.findElement(By.cssSelector(".close"));
+    }
+    public WebElement userName(){
+        return driver.findElement(By.cssSelector("#username"));
+    }
+    public WebElement continueButtonInLoginFrame(){
+        return driver.findElement(By.cssSelector(".btnContainer.appendBottom25"));
+    }
+    public WebElement password(){
+        return driver.findElement(By.cssSelector("#password"));
     }
 }

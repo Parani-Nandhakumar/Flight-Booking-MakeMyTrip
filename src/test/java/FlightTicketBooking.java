@@ -11,6 +11,7 @@ import java.util.Properties;
 public class FlightTicketBooking {
     static WebDriver driver;
     static Properties properties;
+    static HomePageSearch homePageSearch;
 
     public static void driverSetup() throws IOException {
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
@@ -21,31 +22,35 @@ public class FlightTicketBooking {
         driver.get(properties.getProperty("url"));
         driver.manage().window().maximize();
     }
-
-    public static void main(String[] args) throws IOException, InterruptedException {
-        driverSetup();
-        //waiting till popup displayed
-        Thread.sleep(2000);
-        HomePageSearch homePageSearch = new HomePageSearch(driver);
-        //switching to iframe to handle hyperlink popup
+    public static void hyperlinkCheck() throws InterruptedException {
         driver.switchTo().frame(homePageSearch.notificationFrameElement());
-        //checking if hyperlink is enabled and then closing the hyperlink
+        Thread.sleep(1000);
         boolean isHyperlinkDisplayed = homePageSearch.closePopupNotification().isEnabled();
         if (isHyperlinkDisplayed){
             homePageSearch.closePopupNotification().click();
         }
-        Thread.sleep(2000);
-        if(driver.findElement(By.cssSelector("#username")).isDisplayed()) {
-            //driver.findElement(By.cssSelector("#username")).sendKeys("parani777@gmail.com");
-            //driver.findElement(By.cssSelector(".btnContainer.appendBottom25")).click();
-            //Thread.sleep(2000);
-            //driver.findElement(By.cssSelector("#password")).sendKeys("Kalamani@1969");
-            //driver.findElement(By.cssSelector(".btnContainer.appendBottom25")).click();
-            //Thread.sleep(1000);
-            Actions action = new Actions(driver);
-            WebElement makeMyTripPageElement = driver.findElement(By.cssSelector(".mmtLogo.makeFlex"));
-            action.moveToElement(makeMyTripPageElement).click(makeMyTripPageElement).build().perform();
+    }
+    public static void loggingIn() throws InterruptedException {
+        if(homePageSearch.userName().isDisplayed()) {
+            homePageSearch.userName().sendKeys(properties.getProperty("userName"));
+            homePageSearch.continueButtonInLoginFrame().click();
+            Thread.sleep(2000);
+            homePageSearch.password().sendKeys(properties.getProperty("password"));
+            homePageSearch.continueButtonInLoginFrame().click();
+            Thread.sleep(1000);
         }
+    }
+    public static void main(String[] args) throws IOException, InterruptedException {
+        driverSetup();
+        Thread.sleep(2000);
+        homePageSearch = new HomePageSearch(driver);
+        hyperlinkCheck();
+        Thread.sleep(2000);
+    }
+    public static void check() throws InterruptedException {
+        Actions action = new Actions(driver);
+        WebElement makeMyTripPageElement = driver.findElement(By.cssSelector(".mmtLogo.makeFlex"));
+        action.moveToElement(makeMyTripPageElement).click(makeMyTripPageElement).build().perform();
         driver.findElement(By.xpath("//li[@data-cy='oneWayTrip']/span")).click();
         driver.findElement(By.xpath("//label[@for='fromCity']/parent::div")).click();
         if(driver.findElement(By.cssSelector(".autoSuggestPlugin.hsw_autocomplePopup")).isEnabled()){
