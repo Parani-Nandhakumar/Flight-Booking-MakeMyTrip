@@ -40,32 +40,42 @@ public class FlightTicketBooking {
             Thread.sleep(1000);
         }
     }
+    public static void closeLoginPopup(){
+        Actions action = new Actions(driver);
+        action.moveToElement(homePageSearch.makeMyTripLogoElement()).click(homePageSearch.makeMyTripLogoElement()).build().perform();
+    }
+    public static void tripType(){
+        homePageSearch.oneWayTripWebElement().click();
+    }
+    public static void selectingFromCity() throws InterruptedException {
+        homePageSearch.fromCityWebElement().click();
+        if(homePageSearch.fromCitySearchBarDropDownVisibility().isEnabled()){
+            homePageSearch.fromCitySearchBarTextBox().click();
+            homePageSearch.fromCitySearchBarTextBox().sendKeys(properties.getProperty("fromCityCode"));
+            Thread.sleep(2000);
+        }
+        List<WebElement> suggestionElementsFrom = homePageSearch.fromCityDropDownWebElementList();
+        for ( WebElement w : suggestionElementsFrom){
+            if(w.getText().equals(properties.getProperty("fromCityCode"))){
+                Thread.sleep(2000);
+                w.click();
+                break;
+            }
+        }
+    }
     public static void main(String[] args) throws IOException, InterruptedException {
         driverSetup();
         Thread.sleep(2000);
         homePageSearch = new HomePageSearch(driver);
         hyperlinkCheck();
         Thread.sleep(2000);
+        loggingIn();
+        closeLoginPopup();
+        tripType();
+        Thread.sleep(2000);
+        selectingFromCity();
     }
     public static void check() throws InterruptedException {
-        Actions action = new Actions(driver);
-        WebElement makeMyTripPageElement = driver.findElement(By.cssSelector(".mmtLogo.makeFlex"));
-        action.moveToElement(makeMyTripPageElement).click(makeMyTripPageElement).build().perform();
-        driver.findElement(By.xpath("//li[@data-cy='oneWayTrip']/span")).click();
-        driver.findElement(By.xpath("//label[@for='fromCity']/parent::div")).click();
-        if(driver.findElement(By.cssSelector(".autoSuggestPlugin.hsw_autocomplePopup")).isEnabled()){
-            driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open")).click();
-            driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open")).sendKeys("CJB");
-            Thread.sleep(2000);
-        }
-        List<WebElement> suggestionElementsFrom = driver.findElements(By.cssSelector(".pushRight.font14.lightGreyText.latoBold"));
-        for ( WebElement w : suggestionElementsFrom){
-            if(w.getText().equals("CJB")){
-                Thread.sleep(2000);
-                w.click();
-                break;
-            }
-        }
         Thread.sleep(2000);
         driver.findElement(By.xpath("//label[@for='toCity']/parent::div")).click();
         if(driver.findElement(By.cssSelector(".autoSuggestPlugin.hsw_autocomplePopup.makeFlex.column.spaceBetween")).isEnabled()){
