@@ -63,6 +63,25 @@ public class FlightTicketBooking {
             }
         }
     }
+    public static void selectingToCity() throws InterruptedException {
+        homePageSearch.toCityWebElement().click();
+        if(homePageSearch.toCitySearchBarDropDownVisibility().isEnabled()){
+            homePageSearch.toCitySearchBarTextBox().click();
+            homePageSearch.toCitySearchBarTextBox().sendKeys(properties.getProperty("toCityCode"));
+            Thread.sleep(2000);
+        }
+        List<WebElement> suggestionElementsTo = homePageSearch.toCityDropDownWebElementList();
+        for ( WebElement w : suggestionElementsTo){
+            if(w.getText().equals(properties.getProperty("toCityCode"))){
+                Thread.sleep(2000);
+                w.click();
+                break;
+            }
+        }
+    }
+    public static void departureDate(){
+        homePageSearch.departureDateWebElement().click();
+    }
     public static void main(String[] args) throws IOException, InterruptedException {
         driverSetup();
         Thread.sleep(2000);
@@ -74,26 +93,14 @@ public class FlightTicketBooking {
         tripType();
         Thread.sleep(2000);
         selectingFromCity();
+        Thread.sleep(2000);
+        selectingToCity();
+        Thread.sleep(2000);
+        departureDate();
+        Thread.sleep(1000);
+
     }
     public static void check() throws InterruptedException {
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//label[@for='toCity']/parent::div")).click();
-        if(driver.findElement(By.cssSelector(".autoSuggestPlugin.hsw_autocomplePopup.makeFlex.column.spaceBetween")).isEnabled()){
-            driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open")).click();
-            driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open")).sendKeys("SIN");
-            Thread.sleep(2000);
-        }
-        List<WebElement> suggestionElementsTo = driver.findElements(By.cssSelector(".pushRight.font14.lightGreyText.latoBold"));
-        for ( WebElement w : suggestionElementsTo){
-            if(w.getText().equals("SIN")){
-                Thread.sleep(2000);
-                w.click();
-                break;
-            }
-        }
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//div[contains(@aria-label,'Sep 27')]")).click();
-        Thread.sleep(1000);
         driver.findElement(By.cssSelector(".fsw_inputBox.flightTravllers.inactiveWidget")).click();
         driver.findElement(By.xpath("//li[@data-cy='adults-2']")).click();
         driver.findElement(By.xpath("//li[@data-cy='children-1']")).click();

@@ -42,4 +42,19 @@ public class HomePageSearch {
     public List<WebElement> fromCityDropDownWebElementList(){
         return driver.findElements(By.cssSelector(".pushRight.font14.lightGreyText.latoBold"));
     }
+    public WebElement toCityWebElement(){
+        return driver.findElement(By.xpath("//label[@for='toCity']/parent::div"));
+    }
+    public WebElement toCitySearchBarDropDownVisibility(){
+        return driver.findElement(By.cssSelector(".autoSuggestPlugin.hsw_autocomplePopup.makeFlex.column.spaceBetween"));
+    }
+    public WebElement toCitySearchBarTextBox(){
+        return driver.findElement(By.cssSelector(".react-autosuggest__input.react-autosuggest__input--open"));
+    }
+    public List<WebElement> toCityDropDownWebElementList(){
+        return driver.findElements(By.cssSelector(".pushRight.font14.lightGreyText.latoBold"));
+    }
+    public WebElement departureDateWebElement(){
+        return driver.findElement(By.xpath("//div[contains(@aria-label,'Sep 27')]"));
+    }
 }
