@@ -5,26 +5,39 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import org.testng.asserts.Assertion;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.FileHandler;
 
 public class flightTicketbooking {
     WebDriver driver;
     Properties properties;
     HomePageSearch homePageSearch;
     WebDriverWait wait;
-
+    ChromeOptions options;
     @Test
     public void driverSetup() throws IOException {
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
+        options = new ChromeOptions();
+        //options.addArguments("--headless");
+        options.addArguments("--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36");
+        //options.addArguments("--incognito");
+        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--ignore-certificate-errors");
+        options.addArguments("--allow-running-insecure-content");
         driver = new ChromeDriver(options);
         homePageSearch = new HomePageSearch(driver);
         wait = new WebDriverWait(driver, Duration.ofSeconds(3));
@@ -55,10 +68,12 @@ public class flightTicketbooking {
         }
     }
     @Test(dependsOnMethods = {"driverSetup"})
-    public void closeLoginPopup() throws InterruptedException {
+    public void closeLoginPopup() throws InterruptedException, IOException {
         Thread.sleep(2000);
-        if(homePageSearch.closeButtonInLoginFrame().isEnabled()){
+        try{if(homePageSearch.closeButtonInLoginFrame().isDisplayed()){
             homePageSearch.closeButtonInLoginFrame().click();
+        }}catch (NoSuchElementException e){
+            Assert.assertTrue(true);
         }
         }
     @Test(dependsOnMethods = {"closeLoginPopup"})

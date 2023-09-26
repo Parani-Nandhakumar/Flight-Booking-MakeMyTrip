@@ -25,7 +25,7 @@ public class HomePageSearch {
         return driver.findElement(By.cssSelector("#password"));
     }
     public WebElement closeButtonInLoginFrame(){
-        return driver.findElement(By.xpath("//div[@data-cy='outsideModal']/div/section/span"));
+        return driver.findElement(By.xpath("//div[@data-c='outsideModal']/div/section/span"));
     }
     public WebElement oneWayTripWebElement(){
         return driver.findElement(By.xpath("//li[@data-cy='oneWayTrip']/span"));
