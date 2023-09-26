@@ -5,11 +5,11 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 public class HomePageSearch {
-    static WebDriver driver;
+    WebDriver driver;
     HomePageSearch(WebDriver driver){
-        HomePageSearch.driver = driver;
+        this.driver=driver;
     }
-    public WebElement notificationFrameElement(){
+   public WebElement notificationFrameElement(){
         return driver.findElement(By.id("webklipper-publisher-widget-container-notification-frame"));
     }
     public WebElement closePopupNotification(){
@@ -24,8 +24,8 @@ public class HomePageSearch {
     public WebElement password(){
         return driver.findElement(By.cssSelector("#password"));
     }
-    public WebElement makeMyTripLogoElement(){
-        return driver.findElement(By.cssSelector(".mmtLogo.makeFlex"));
+    public WebElement closeButtonInLoginFrame(){
+        return driver.findElement(By.xpath("//div[@data-cy='outsideModal']/div/section/span"));
     }
     public WebElement oneWayTripWebElement(){
         return driver.findElement(By.xpath("//li[@data-cy='oneWayTrip']/span"));
@@ -56,5 +56,26 @@ public class HomePageSearch {
     }
     public WebElement departureDateWebElement(){
         return driver.findElement(By.xpath("//div[contains(@aria-label,'Sep 27')]"));
+    }
+    public WebElement travellerGridVisibility(){
+        return driver.findElement(By.cssSelector(".fsw_inputBox.flightTravllers.inactiveWidget"));
+    }
+    public WebElement adultTravellersCount(){
+        return driver.findElement(By.xpath("//li[@data-cy='adults-2']"));
+    }
+    public WebElement childrenTravellersCount(){
+        return driver.findElement(By.xpath("//li[@data-cy='children-1']"));
+    }
+    public WebElement infantsTravellerCount(){
+        return driver.findElement(By.xpath("//li[@data-cy='infants-1']"));
+    }
+    public WebElement travelClass(){
+        return driver.findElement(By.xpath("//li[@data-cy='travelClass-2']"));
+    }
+    public WebElement travellerGridApplyButton(){
+        return driver.findElement(By.cssSelector(".primaryBtn.btnApply.pushRight"));
+    }
+    public WebElement homePageSearchSearchButtonWebElement(){
+        return driver.findElement(By.cssSelector(".primaryBtn.font24.latoBold.widgetSearchBtn "));
     }
 }
