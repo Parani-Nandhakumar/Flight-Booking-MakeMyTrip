@@ -1,34 +1,34 @@
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
+import org.testng.ITestContext;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import org.testng.asserts.Assertion;
-
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.FileHandler;
-
+@Listeners(ListenersTest.class)
 public class flightTicketbooking {
     WebDriver driver;
     Properties properties;
     HomePageSearch homePageSearch;
     WebDriverWait wait;
     ChromeOptions options;
-    @Test
+    @BeforeClass(dependsOnMethods = {"driverSetup"})
+    public void setDriver(ITestContext context){
+        System.out.println("set driver executed");
+        context.setAttribute("WebDriver",driver);
+    }
+    @BeforeClass()
     public void driverSetup() throws IOException {
+        System.out.println("driver setup executed");
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
         options = new ChromeOptions();
         //options.addArguments("--headless");
@@ -67,7 +67,7 @@ public class flightTicketbooking {
             Thread.sleep(1000);
         }
     }
-    @Test(dependsOnMethods = {"driverSetup"})
+    @Test()
     public void closeLoginPopup() throws InterruptedException, IOException {
         Thread.sleep(2000);
         try{if(homePageSearch.closeButtonInLoginFrame().isDisplayed()){
@@ -118,7 +118,8 @@ public class flightTicketbooking {
     }
     @Test(dependsOnMethods = {"departureDate"})
     public void travellerDetails(){
-        homePageSearch.travellerGridVisibility().click();
+        wait.until(ExpectedConditions.visibilityOf(homePageSearch.travellerGridVisibility())).click();
+        //homePageSearch.travellerGridVisibility().click();
         homePageSearch.adultTravellersCount().click();
         homePageSearch.childrenTravellersCount().click();
         homePageSearch.infantsTravellerCount().click();

@@ -25,7 +25,7 @@ public class HomePageSearch {
         return driver.findElement(By.cssSelector("#password"));
     }
     public WebElement closeButtonInLoginFrame(){
-        return driver.findElement(By.xpath("//div[@data-c='outsideModal']/div/section/span"));
+        return driver.findElement(By.xpath("//div[@data-cy='outsideModal']/div/section/span"));
     }
     public WebElement oneWayTripWebElement(){
         return driver.findElement(By.xpath("//li[@data-cy='oneWayTrip']/span"));
@@ -55,13 +55,13 @@ public class HomePageSearch {
         return driver.findElements(By.cssSelector(".pushRight.font14.lightGreyText.latoBold"));
     }
     public WebElement departureDateWebElement(){
-        return driver.findElement(By.xpath("//div[contains(@aria-label,'Sep 27')]"));
+        return driver.findElement(By.xpath("//div[contains(@aria-label,'Oct 27')]"));
     }
     public WebElement travellerGridVisibility(){
-        return driver.findElement(By.cssSelector(".fsw_inputBox.flightTravllers.inactiveWidget"));
+        return driver.findElement(By.cssSelector(".flt_fsw_inputBox.flightTravllers.inactiveWidget"));
     }
     public WebElement adultTravellersCount(){
-        return driver.findElement(By.xpath("//li[@data-cy='adults-2']"));
+        return driver.findElement(By.xpath("//li[@data-c='adults-2']"));
     }
     public WebElement childrenTravellersCount(){
         return driver.findElement(By.xpath("//li[@data-cy='children-1']"));
