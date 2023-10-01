@@ -61,7 +61,7 @@ public class HomePageSearch {
         return driver.findElement(By.cssSelector(".flt_fsw_inputBox.flightTravllers.inactiveWidget"));
     }
     public WebElement adultTravellersCount(){
-        return driver.findElement(By.xpath("//li[@data-c='adults-2']"));
+        return driver.findElement(By.xpath("//li[@data-cy='adults-2']"));
     }
     public WebElement childrenTravellersCount(){
         return driver.findElement(By.xpath("//li[@data-cy='children-1']"));

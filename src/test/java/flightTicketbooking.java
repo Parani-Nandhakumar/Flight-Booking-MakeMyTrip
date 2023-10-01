@@ -1,3 +1,7 @@
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentReporter;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -5,10 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.ITestContext;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeGroups;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.Duration;
@@ -21,6 +23,9 @@ public class flightTicketbooking {
     HomePageSearch homePageSearch;
     WebDriverWait wait;
     ChromeOptions options;
+    ExtentSparkReporter extentSparkReporter;
+    ExtentReports extentReports;
+
     @BeforeClass(dependsOnMethods = {"driverSetup"})
     public void setDriver(ITestContext context){
         System.out.println("set driver executed");
@@ -40,12 +45,21 @@ public class flightTicketbooking {
         options.addArguments("--allow-running-insecure-content");
         driver = new ChromeDriver(options);
         homePageSearch = new HomePageSearch(driver);
+        extentSparkReporter = new ExtentSparkReporter(System.getProperty("user.dir")+"\\Reports\\Report.html");
+        extentReports = new ExtentReports();
+        extentReports.attachReporter(extentSparkReporter);
         wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         FileInputStream fileInputStream = new FileInputStream("fileProperties.properties");
         properties = new Properties();
         properties.load(fileInputStream);
         driver.get(properties.getProperty("url"));
         driver.manage().window().maximize();
+    }
+    public void extentReportTestMethod(String methodName){
+        ExtentTest extentTest = extentReports.createTest(methodName);
+    }
+    public void extentReportFlushMethod(){
+        extentReports.flush();
     }
     @Test(enabled = false)
    public void hyperlinkCheck() throws InterruptedException {
@@ -69,19 +83,24 @@ public class flightTicketbooking {
     }
     @Test()
     public void closeLoginPopup() throws InterruptedException, IOException {
+        extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
         Thread.sleep(2000);
         try{if(homePageSearch.closeButtonInLoginFrame().isDisplayed()){
             homePageSearch.closeButtonInLoginFrame().click();
         }}catch (NoSuchElementException e){
             Assert.assertTrue(true);
         }
+        extentReportFlushMethod();
         }
     @Test(dependsOnMethods = {"closeLoginPopup"})
     public void tripType(){
+        extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
         homePageSearch.oneWayTripWebElement().click();
+        extentReportFlushMethod();
     }
     @Test(dependsOnMethods = {"tripType"})
     public void selectingFromCity() throws InterruptedException {
+        extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
         homePageSearch.fromCityWebElement().click();
         if(homePageSearch.fromCitySearchBarDropDownVisibility().isEnabled()){
             homePageSearch.fromCitySearchBarTextBox().click();
@@ -95,9 +114,11 @@ public class flightTicketbooking {
                 break;
             }
         }
+        extentReportFlushMethod();
     }
     @Test(dependsOnMethods = {"selectingFromCity"})
     public void selectingToCity() throws InterruptedException {
+        extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
         homePageSearch.toCityWebElement().click();
         if(homePageSearch.toCitySearchBarDropDownVisibility().isEnabled()){
             homePageSearch.toCitySearchBarTextBox().click();
@@ -111,13 +132,17 @@ public class flightTicketbooking {
                 break;
             }
         }
+        extentReportFlushMethod();
     }
     @Test(dependsOnMethods = {"selectingToCity"})
     public void departureDate(){
+        extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
         homePageSearch.departureDateWebElement().click();
+        extentReportFlushMethod();
     }
     @Test(dependsOnMethods = {"departureDate"})
     public void travellerDetails(){
+        extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
         wait.until(ExpectedConditions.visibilityOf(homePageSearch.travellerGridVisibility())).click();
         //homePageSearch.travellerGridVisibility().click();
         homePageSearch.adultTravellersCount().click();
@@ -125,9 +150,12 @@ public class flightTicketbooking {
         homePageSearch.infantsTravellerCount().click();
         homePageSearch.travelClass().click();
         homePageSearch.travellerGridApplyButton().click();
+        extentReportFlushMethod();
     }
     @Test(dependsOnMethods = {"travellerDetails"})
     public void homePageSearchButton(){
+        extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
         homePageSearch.homePageSearchSearchButtonWebElement().click();
+        extentReportFlushMethod();
     }
     }
