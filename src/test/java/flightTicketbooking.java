@@ -36,9 +36,9 @@ public class flightTicketbooking {
         System.out.println("driver setup executed");
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver.exe");
         options = new ChromeOptions();
-        //options.addArguments("--headless");
+        options.addArguments("--headless");
         options.addArguments("--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36");
-        //options.addArguments("--incognito");
+        options.addArguments("--incognito");
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--ignore-certificate-errors");
