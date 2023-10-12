@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
+import org.testng.asserts.Assertion;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -61,13 +62,21 @@ public class flightTicketbooking {
     public void extentReportFlushMethod(){
         extentReports.flush();
     }
-    @Test(enabled = false)
-   public void hyperlinkCheck() throws InterruptedException {
-        driver.switchTo().frame(homePageSearch.notificationFrameElement());
-        Thread.sleep(1000);
-        boolean isHyperlinkDisplayed = homePageSearch.closePopupNotification().isEnabled();
-        if (isHyperlinkDisplayed){
-            homePageSearch.closePopupNotification().click();
+    @Test()
+    public void hyperlinkCheck() throws InterruptedException {
+        try{
+            Thread.sleep(2000);
+            int iframeSize = driver.findElements(By.tagName("iframe")).size();
+            if(iframeSize>0){
+                driver.switchTo().frame(homePageSearch.notificationFrame());
+                Thread.sleep(1000);
+                boolean isHyperlinkDisplayed = homePageSearch.closePopupNotification().isEnabled();
+                if (isHyperlinkDisplayed){
+                    homePageSearch.closePopupNotification().click();
+                }
+            }
+        } catch (NoSuchElementException ignored) {
+            Assert.assertTrue(true);
         }
     }
     @Test(enabled = false)
@@ -81,7 +90,7 @@ public class flightTicketbooking {
             Thread.sleep(1000);
         }
     }
-    @Test()
+    @Test(dependsOnMethods = {"hyperlinkCheck"})
     public void closeLoginPopup() throws InterruptedException, IOException {
         extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
         Thread.sleep(2000);

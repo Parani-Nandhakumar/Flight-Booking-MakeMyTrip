@@ -6,12 +6,13 @@ import java.util.List;
 
 public class HomePageSearch {
     WebDriver driver;
+    By notificationFrameWebElement = By.cssSelector("#webklipper-publisher-widget-container-notification-frame");
     HomePageSearch(WebDriver driver){
         this.driver=driver;
     }
-   public WebElement notificationFrameElement(){
-        return driver.findElement(By.id("webklipper-publisher-widget-container-notification-frame"));
-    }
+   public WebElement notificationFrame(){
+        return driver.findElement(notificationFrameWebElement);
+   }
     public WebElement closePopupNotification(){
         return driver.findElement(By.cssSelector(".close"));
     }
