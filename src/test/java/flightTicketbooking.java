@@ -1,6 +1,5 @@
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.reporter.ExtentReporter;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -10,7 +9,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
-import org.testng.asserts.Assertion;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -74,6 +72,7 @@ public class flightTicketbooking {
                 if (isHyperlinkDisplayed){
                     homePageSearch.closePopupNotification().click();
                 }
+                driver.switchTo().defaultContent();
             }
         } catch (NoSuchElementException ignored) {
             Assert.assertTrue(true);
@@ -94,29 +93,29 @@ public class flightTicketbooking {
     public void closeLoginPopup() throws InterruptedException, IOException {
         extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
         Thread.sleep(2000);
-        try{if(homePageSearch.closeButtonInLoginFrame().isDisplayed()){
+        try{if(homePageSearch.closeButtonInLoginFrame().isEnabled()){
             homePageSearch.closeButtonInLoginFrame().click();
         }}catch (NoSuchElementException e){
-            Assert.assertTrue(true);
+            System.out.println("No such element");
         }
         extentReportFlushMethod();
         }
     @Test(dependsOnMethods = {"closeLoginPopup"})
     public void tripType(){
         extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
-        homePageSearch.oneWayTripWebElement().click();
+        homePageSearch.oneWayTrip().click();
         extentReportFlushMethod();
     }
     @Test(dependsOnMethods = {"tripType"})
     public void selectingFromCity() throws InterruptedException {
         extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
-        homePageSearch.fromCityWebElement().click();
+        homePageSearch.fromCity().click();
         if(homePageSearch.fromCitySearchBarDropDownVisibility().isEnabled()){
             homePageSearch.fromCitySearchBarTextBox().click();
             homePageSearch.fromCitySearchBarTextBox().sendKeys(properties.getProperty("fromCityCode"));
         }
         Thread.sleep(1000);
-        List<WebElement> suggestionElementsFrom = homePageSearch.fromCityDropDownWebElementList();
+        List<WebElement> suggestionElementsFrom = homePageSearch.fromCityDropDownList();
         for ( WebElement w : suggestionElementsFrom){
             if(w.getText().equals(properties.getProperty("fromCityCode"))){
                 wait.until(ExpectedConditions.elementToBeClickable(w)).click();
@@ -128,13 +127,13 @@ public class flightTicketbooking {
     @Test(dependsOnMethods = {"selectingFromCity"})
     public void selectingToCity() throws InterruptedException {
         extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
-        homePageSearch.toCityWebElement().click();
+        homePageSearch.toCity().click();
         if(homePageSearch.toCitySearchBarDropDownVisibility().isEnabled()){
             homePageSearch.toCitySearchBarTextBox().click();
             homePageSearch.toCitySearchBarTextBox().sendKeys(properties.getProperty("toCityCode"));
             Thread.sleep(1000);
         }
-        List<WebElement> suggestionElementsTo = homePageSearch.toCityDropDownWebElementList();
+        List<WebElement> suggestionElementsTo = homePageSearch.toCityDropDownList();
         for ( WebElement w : suggestionElementsTo){
             if(w.getText().equals(properties.getProperty("toCityCode"))){
                 wait.until(ExpectedConditions.elementToBeClickable(w)).click();
@@ -146,7 +145,7 @@ public class flightTicketbooking {
     @Test(dependsOnMethods = {"selectingToCity"})
     public void departureDate(){
         extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
-        homePageSearch.departureDateWebElement().click();
+        homePageSearch.departureDate().click();
         extentReportFlushMethod();
     }
     @Test(dependsOnMethods = {"departureDate"})
@@ -164,7 +163,7 @@ public class flightTicketbooking {
     @Test(dependsOnMethods = {"travellerDetails"})
     public void homePageSearchButton(){
         extentReportTestMethod(Thread.currentThread().getStackTrace()[1].getMethodName());
-        homePageSearch.homePageSearchSearchButtonWebElement().click();
+        homePageSearch.homePageSearchSearchButton().click();
         extentReportFlushMethod();
     }
     }
